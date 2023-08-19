@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    volumes:
+      - frontend_data:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
+    restart: always
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - backend_data:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - "3000"
+
+volumes:
+  frontend_data:
+  backend_data:
+
+networks:
+  react-express:
